@@ -1,0 +1,23 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  is-even:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Is build number even?
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12.x
+          cache: 'npm'
+      - run: npm install @samuelmarina/is-even
+      - run: echo "var isEven = require('@samuelmarina/is-even'); isEven(process.argv[2]);" > is-build-even.js
+      - run: npm run is-build-even.js ${{github.run_number}}
